@@ -1,4 +1,5 @@
 numpy
 matplotlib
+plotly
 scipy
 jupyter
