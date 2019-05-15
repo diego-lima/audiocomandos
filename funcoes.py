@@ -6,4 +6,13 @@ def centro_gravidade(indices: np.array, valores: np.array):
 
     return (indices*valores).sum() / valores.sum()
 
+
+def sigmoid(z):
+    '''
+    Sigmoid function
+    z can be an numpy array or scalar
+    '''
+    result = 1.0 / (1.0 + np.exp(-z))
+    return result
+
     
