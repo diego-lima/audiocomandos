@@ -1,6 +1,7 @@
 numpy
 matplotlib
-ipdp
+ipdb
 plotly
 scipy
 jupyter
+sounddevice
