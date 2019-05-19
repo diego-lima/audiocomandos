@@ -1,11 +1,23 @@
 from typing import Union
 import numpy as np
 
+
 def calcular_centro_gravidade(indices: np.array, valores: np.array):
     """Pega uma série numérica e retorna seu centro de gravidade"""
 
     return (indices*valores).sum() / valores.sum()
 
+
+def calcular_rollof(valores: np.array):
+
+    return 0.8*valores.sum()
+
+
+def normalize(d):
+    d -= np.min(d, axis=0)
+    d /= np.ptp(d, axis=0)
+
+    return d
 
 def sigmoid(z):
     '''
