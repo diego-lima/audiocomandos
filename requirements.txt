@@ -1,7 +1,8 @@
 numpy
 matplotlib
 ipdb
-plotly
+seaborn
 scipy
 jupyter
 sounddevice
+pandas
