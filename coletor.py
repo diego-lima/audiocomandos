@@ -7,6 +7,8 @@ import os
 import time
 import subprocess
 
+from funcoes import nome_diferente
+
 """
 CONSTANTES
 """
@@ -32,35 +34,6 @@ def on(texto="  ON  "):
 def off(texto="  OFF "):
     """Retorna um texto pra ser printado com fundo vermelho"""
     return OFF_ESCAPE + texto + RESET_ESCAPE
-
-
-def nome_diferente(raiz, caminho='.', sufixo=1, formato='wav'):
-    """ Recebe um nome que você quer que o arquivo tenha.
-    Retorna um nome seguido de um número de forma que o nome retornado não exista ainda no diretório.
-
-    Se sua raiz for 'palma', mas já existir 'palma_1.wav', eu vou retornar 'palma_2.wav'
-
-    raiz:       nome do arquivo
-    diretorio:  onde procurar se já tem um arquivo existente com nome igual
-    sufixo:     primeiro inteiro que devemos verificar se já tem, e ir incrementando enquanto houver
-    formato:    formato do arquivo gerado
-    """
-
-    nomes_existentes = os.listdir(caminho)
-
-    i = sufixo
-    while True:
-        novo_nome = "%s-%d.%s" % (raiz, i, formato)
-
-        if novo_nome in nomes_existentes:
-            i += 1
-            continue
-
-        if caminho == '.':
-            return novo_nome
-
-        return os.path.join(caminho, novo_nome)
-
 
 """
 PARSER
@@ -96,8 +69,11 @@ args = parser.parse_args()
 
 diretorio = args.diretorio
 
-nome = args.nome
-nome = nome if nome else diretorio.split('/')[-1]
+if args.nome:
+    nome = args.nome
+else:
+    nomes = [n for n in diretorio.split(['/']) if n]
+    nome = nomes[-1]
 
 quantidade = 1
 

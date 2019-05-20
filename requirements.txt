@@ -4,5 +4,6 @@ ipdb
 seaborn
 scipy
 jupyter
+pyaudio
 sounddevice
 pandas
