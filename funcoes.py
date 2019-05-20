@@ -1,5 +1,44 @@
 from typing import Union
 import numpy as np
+import os
+import glob
+
+def arquivo_mais_recente(diretorio="."):
+    """
+    Recebe o caminho de uma pasta e retorna o nome do arquivo mais recente.
+    """
+    files = os.listdir(diretorio)
+    paths = [os.path.join(diretorio, basename) for basename in files]
+    return max(paths, key=os.path.getctime)
+
+
+def nome_diferente(raiz, caminho='.', sufixo=1, formato='wav'):
+    """ Recebe um nome que você quer que o arquivo tenha.
+    Retorna um nome seguido de um número de forma que o nome retornado não exista ainda no diretório.
+
+    Se sua raiz for 'palma', mas já existir 'palma_1.wav', eu vou retornar 'palma_2.wav'
+
+    raiz:       nome do arquivo
+    diretorio:  onde procurar se já tem um arquivo existente com nome igual
+    sufixo:     primeiro inteiro que devemos verificar se já tem, e ir incrementando enquanto houver
+    formato:    formato do arquivo gerado
+    """
+
+    nomes_existentes = os.listdir(caminho)
+
+    i = sufixo
+    while True:
+        novo_nome = "%s-%d.%s" % (raiz, i, formato)
+
+        if novo_nome in nomes_existentes:
+            i += 1
+            continue
+
+        if caminho == '.':
+            return novo_nome
+
+        return os.path.join(caminho, novo_nome)
+
 
 def calcular_centro_gravidade(indices: np.array, valores: np.array):
     """Pega uma série numérica e retorna seu centro de gravidade"""
