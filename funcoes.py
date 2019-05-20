@@ -40,11 +40,23 @@ def nome_diferente(raiz, caminho='.', sufixo=1, formato='wav'):
         return os.path.join(caminho, novo_nome)
 
 
+
 def calcular_centro_gravidade(indices: np.array, valores: np.array):
     """Pega uma série numérica e retorna seu centro de gravidade"""
 
     return (indices*valores).sum() / valores.sum()
 
+
+def calcular_rollof(valores: np.array):
+
+    return 0.8*valores.sum()
+
+
+def normalize(d):
+    d -= np.min(d, axis=0)
+    d /= np.ptp(d, axis=0)
+
+    return d
 
 def sigmoid(z):
     '''
