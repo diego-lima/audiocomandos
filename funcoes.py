@@ -3,6 +3,8 @@ import numpy as np
 import os
 import glob
 
+from scipy.fftpack import fft
+
 def arquivo_mais_recente(diretorio="."):
     """
     Recebe o caminho de uma pasta e retorna o nome do arquivo mais recente.
@@ -39,6 +41,13 @@ def nome_diferente(raiz, caminho='.', sufixo=1, formato='wav'):
 
         return os.path.join(caminho, novo_nome)
 
+    
+def get_fft_values(sampling_rate, data):
+    size = data.shape[0]
+    f_values = np.linspace(0.0, sampling_rate/2.0, size//2)
+    fft_values_ = fft(data)
+    fft_values = 2.0/size * np.abs(fft_values_[0:size//2])
+    return f_values, fft_values
 
 
 def calcular_centro_gravidade(indices: np.array, valores: np.array):

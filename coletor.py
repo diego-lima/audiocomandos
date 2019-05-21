@@ -72,7 +72,7 @@ diretorio = args.diretorio
 if args.nome:
     nome = args.nome
 else:
-    nomes = [n for n in diretorio.split(['/']) if n]
+    nomes = [n for n in diretorio.split('/') if n]
     nome = nomes[-1]
 
 quantidade = 1

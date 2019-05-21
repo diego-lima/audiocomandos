@@ -6,9 +6,10 @@ import pandas as pd
 import threading
 import logging
 import time
+import matplotlib.pyplot as plt
 
 
-from funcoes import arquivo_mais_recente
+from funcoes import arquivo_mais_recente, get_fft_values
 from MLP import predizer
 from extratores import *
 
@@ -19,9 +20,20 @@ SETUP
 raiz_pesos = 'rede'
 raiz_audios = 'dataset'
 
-# Carregando pesos
+# Carregando informações
 with open(arquivo_mais_recente(raiz_pesos), 'rb') as myf:
-    rede = pickle.load(myf)
+    bundle = pickle.load(myf)
+
+rede = bundle['rede']
+treino_media = bundle['treino_media']
+treino_desvio_padrao = bundle['treino_desvio_padrao']
+classes = bundle['classes']
+
+# deixar os extratores na ordem certa
+copia = extratores[:]
+for i,feature in enumerate(treino_desvio_padrao.index):
+    busca = [f for f in copia if f.__name__ == feature]
+    extratores[i] = busca[0]
 
 # Nomes das classes
 classes = os.listdir(raiz_audios)
@@ -48,11 +60,8 @@ def coletar_audio():
     
     while threads_ligadas:
         data = stream.read(bloco_amostras)
-        fila.put(np.fromstring(data, dtype=np.int16))
+        fila.put(np.frombuffer(data, dtype=np.int16))
     
-coleta = threading.Thread(target=coletar_audio)
-coleta.start()
-
 def atualizar_buffer():
     global audiodata
     global fila
@@ -68,19 +77,39 @@ def atualizar_buffer():
         
 
 coleta = threading.Thread(target=coletar_audio)
-# coleta.start()
 
 atualizacao_buffer = threading.Thread(target=atualizar_buffer)
-# atualizacao_buffer.start()
+
+coleta.start()
+atualizacao_buffer.start()
 
 
 """
 TRATANDO OS DADOS PRA JOGAR NO MLP
 """
 
-# dado = {f.__name__: f(dados) for f in extratores}
-# dado = pd.DataFrame([dado])
-print(extratores)
+while True:
+    # Copiar os últimos 2 segundos de áudio
+    dados = audiodata.copy()
+
+    # Aplicar os extratores de features
+    dado = [f(dados) for f in extratores]
+
+    # Normalizar para aquelas features
+    for i in range(len(dado)):
+        dado[i] = (dado[i] - treino_media[i]) / treino_desvio_padrao[i]
+
+    resultado = predizer(rede, dado)
+    print(classes[resultado])
+    # print(dado)
+
+
+"""
+DESLIGANDO
+"""
+
+threads_ligadas = False
+time.sleep(1)
 
 stream.stop_stream()
 stream.close()
