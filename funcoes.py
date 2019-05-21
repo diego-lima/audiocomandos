@@ -2,6 +2,8 @@ from typing import Union
 import numpy as np
 import os
 import glob
+import time
+import hashlib
 
 from scipy.fftpack import fft
 
@@ -14,7 +16,7 @@ def arquivo_mais_recente(diretorio="."):
     return max(paths, key=os.path.getctime)
 
 
-def nome_diferente(raiz, caminho='.', sufixo=1, formato='wav'):
+def nome_diferente(raiz, caminho='.', sufixo=1, formato='wav', tem_hash=True):
     """ Recebe um nome que você quer que o arquivo tenha.
     Retorna um nome seguido de um número de forma que o nome retornado não exista ainda no diretório.
 
@@ -24,13 +26,21 @@ def nome_diferente(raiz, caminho='.', sufixo=1, formato='wav'):
     diretorio:  onde procurar se já tem um arquivo existente com nome igual
     sufixo:     primeiro inteiro que devemos verificar se já tem, e ir incrementando enquanto houver
     formato:    formato do arquivo gerado
+    tem_hash:   se deve incluir um hashzinho no nome do arquivo, para prevenir colisão em merge
     """
 
     nomes_existentes = os.listdir(caminho)
 
     i = sufixo
     while True:
-        novo_nome = "%s-%d.%s" % (raiz, i, formato)
+        if tem_hash:
+            novo_nome = "%s-%d" % (raiz, i)
+            seed = "%s%d" % (novo_nome, time.time())
+            seed = seed.encode('utf-8')
+            seed = hashlib.md5(seed).hexdigest()[:6]
+            novo_nome = "%s-%s.%s" % (novo_nome, seed, formato)
+        else:
+            novo_nome = "%s-%d.%s" % (raiz, i, formato)
 
         if novo_nome in nomes_existentes:
             i += 1
