@@ -19,6 +19,16 @@ def normalize(d):
 
     return d
 
+
+def func_signal(d):
+
+    if d > 0:
+        return -1
+    elif d == 0:
+        return 0
+    else:
+        return -1
+
 def sigmoid(z):
     '''
     Sigmoid function
