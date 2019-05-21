@@ -7,6 +7,12 @@ import hashlib
 
 from scipy.fftpack import fft
 
+RESET_ESCAPE = '\x1b[0m'
+
+def colorido(cor, texto):
+
+    return cor + texto + RESET_ESCAPE
+
 def arquivo_mais_recente(diretorio="."):
     """
     Recebe o caminho de uma pasta e retorna o nome do arquivo mais recente.

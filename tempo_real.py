@@ -9,9 +9,29 @@ import time
 import matplotlib.pyplot as plt
 
 
-from funcoes import arquivo_mais_recente, get_fft_values
+from funcoes import arquivo_mais_recente, colorido
 from MLP import predizer
 from extratores import *
+
+CORES = [
+    "\033[1;37;42m", #verde
+    "\033[1;37;45m", #purple
+    "\033[1;30;41m", #vermelho
+    "\033[1;37;44m", #azul
+    "\033[1;37;43m" #amarelo
+]
+
+
+extratores = [
+    f_media,
+    f_centro_gravidade,
+#     f_mediana,
+#     f_percentil75,
+#     f_percentil90,
+    f_percentil99,
+    f_fluxo_spectral,
+#    f_dominio_tempo,
+]
 
 """
 SETUP
@@ -100,8 +120,7 @@ while True:
         dado[i] = (dado[i] - treino_media[i]) / treino_desvio_padrao[i]
 
     resultado = predizer(rede, dado)
-    print(classes[resultado])
-    # print(dado)
+    print(colorido(CORES[resultado],"     "), "    (%s)" % classes[resultado])
 
 
 """

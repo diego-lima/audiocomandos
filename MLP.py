@@ -313,7 +313,7 @@ if __name__ == "__main__":
     plt.show()
 
 
-# In[4]:
+# In[13]:
 
 
 if __name__ == "__main__":
@@ -325,10 +325,10 @@ if __name__ == "__main__":
     função de ativação
     """
 
-    dimensoes_camadas = [2,3,4]
+    dimensoes_camadas = [2,25,4]
 
 
-# In[5]:
+# In[14]:
 
 
 if __name__ == "__main__":
@@ -353,7 +353,7 @@ if __name__ == "__main__":
             print("erro medio: ", sum(erros)/len(erros))
 
 
-# In[6]:
+# In[15]:
 
 
 if __name__ == "__main__":
@@ -378,4 +378,10 @@ if __name__ == "__main__":
     y = [d[1] for d in dados]
     plt.scatter(x,y, c=labels, s=140)
     plt.show()
+
+
+# In[ ]:
+
+
+
 
