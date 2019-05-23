@@ -12,6 +12,8 @@ Coletamos alguns áudios, e fizemos [uma análise](https://nbviewer.jupyter.org/
 Por fim, geramos um dataset (fizemos nossa própria coleta de exemplos) e o utilizamos para [treinar a MLP](https://nbviewer.jupyter.org/github/diego-lima/audiocomandos/blob/master/Modelo.ipynb).
 
 
+[Essa](https://github.com/diego-lima/audiocomandos/blob/master/IA%20Audiocomandos.pdf) foi a apresentação desse projeto na disciplina de IA.
+
 
 Uma descrição rápida do conteúdo desse repositório:
 
